@@ -9,8 +9,8 @@
 // =============================================================================
 
 // call the packages we need
-var express    = require('express');        // call express
-var app        = express();                 // define our app using express
+var express = require('express'); // call express
+var app = express(); // define our app using express
 var bodyParser = require('body-parser');
 
 // configure app to use bodyParser()
@@ -18,13 +18,13 @@ var bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-//var port = process.env.PORT || 8080;        // set our port
-    var ipaddress = process.env.OPENSHIFT_NODEJS_IP || 'localhost';
-    var port      = process.env.OPENSHIFT_NODEJS_PORT || 8080;
+//var port = process.env.PORT || 8080; // set our port
+    var ipaddress = process.env.OPENSHIFT_NODEJS_IP || 'localhost';
+    var port = process.env.OPENSHIFT_NODEJS_PORT || 8080;
 
 // ROUTES FOR OUR API
 // =============================================================================
-var router = express.Router();              // get an instance of the express Router
+var router = express.Router();    // get an instance of the express Router
 
 // test route to make sure everything is working (accessed at GET http://localhost:8080/api)
 router.get('/', function(req, res) {
@@ -33,13 +33,14 @@ router.get('/', function(req, res) {
 
 router.get('/api', function(req, res) {
     //res.json({ message: 'hooray! welcome to our api!' });
-  var mysql      = require('mysql');
-  var conn 		   = (process.env.OPENSHIFT_MYSQL_DB_URL || 'mysql://root:test1234@localhost/') + 'mediaplayer';
-  var connection = mysql.createConnection(conn);
+    var mysql = require('mysql');
+    var conn = (process.env.OPENSHIFT_MYSQL_DB_URL || 'mysql://root:test1234@localhost/') + 'mediaplayer';
+    
+    var connection = mysql.createConnection(conn);
 
-  connection.connect();
+    connection.connect();
 
-  connection.query('SHOW TABLES', function(err, rows, fields) {
+connection.query('SHOW TABLES', function(err, rows, fields) {
     console.log("rows:", rows);
     if (err) {
       console.log(err);
@@ -47,27 +48,28 @@ router.get('/api', function(req, res) {
     }
     var dbresp = "";
     for(var solution in rows) {
-      //console.log('Table', solution + ': ', rows[solution].Tables_in_mediaplayer);
-      //res.json({ message: 'hooray! welcome to our api!' });
-      dbresp += 'Tables: ' + rows[solution].Tables_in_mediaplayer + ' | ';
+        //console.log('Table', solution + ': ', rows[solution].Tables_in_mediaplayer);
+        //res.json({ message: 'hooray! welcome to our api!' });
+        dbresp += 'Tables: ' + rows[solution].Tables_in_mediaplayer + ' | ';
     }
     res.json({ message: dbresp });
   });
 
+
   connection.end();
 });
+
 
 /* Handle login POST request */
 router.post('/api/login', function(req, res) {
   console.log("some login data just arrived:", req.body);
-  if(undefined !== (req.body.password) &&  undefined !== req.body.username) {
+  if(undefined !== (req.body.password) && undefined !== req.body.username) {
     // TODO get personal playlist from database
     res.json({login: 'ok', playlist: [{title: "Kesämopo", artist: "Sleepy Sleepers"}, {title: "Africa", artist: "Toto"}]});
   }
-  else {
-    res.json({login: 'failed'});
+    else {
+      res.json({login: 'failed'});
   }
-
 });
 
 // more routes for our API will happen here
@@ -75,7 +77,9 @@ router.post('/api/login', function(req, res) {
 // all of our routes will be prefixed with /api
 app.use('/', router);
 
+
 app.use(express.static(__dirname + '/'));
+
 
 // START THE SERVER
 // =============================================================================
