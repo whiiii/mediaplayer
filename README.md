@@ -1,6 +1,6 @@
 ### Clone sources to your own virtual machine
 
-`git clone https://github.com/jvanhalen/mediaplayer.git`
+`git clone https://github.com/whiiii/mediaplayer.git`
 
 copy the files over your OpenShift mediaplayer application.
 
