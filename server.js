@@ -34,7 +34,7 @@ router.get('/', function(req, res) {
 router.get('/api', function(req, res) {
     //res.json({ message: 'hooray! welcome to our api!' });
     var mysql = require('mysql');
-    var conn = (process.env.OPENSHIFT_MYSQL_DB_URL || 'mysql://root:test1234@localhost/') + 'mediaplayer';
+    var conn = (process.env.OPENSHIFT_MYSQL_DB_URL || 'mysql://mediaplayer:testing@localhost/') + 'mediaplayer';
     
     var connection = mysql.createConnection(conn);
 
@@ -65,6 +65,9 @@ router.post('/api/login', function(req, res) {
   console.log("some login data just arrived:", req.body);
   if(undefined !== (req.body.password) && undefined !== req.body.username) {
     // TODO get personal playlist from database
+
+
+    
     res.json({login: 'ok', playlist: [{title: "Kesämopo", artist: "Sleepy Sleepers"}, {title: "Africa", artist: "Toto"}]});
   }
     else {
