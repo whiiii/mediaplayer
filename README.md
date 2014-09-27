@@ -9,7 +9,7 @@ copy the files over your OpenShift mediaplayer application.
 `sudo apt-get install mysql-server`
 
 Set root password to 'test1234'.
-
+sdsdsdsd
 ### Preparations
 Move to your mediaplayer application folder. 
 

@@ -1,15 +1,17 @@
+DROP DATABASE IF EXISTS mediaplayer;
+
 CREATE DATABASE mediaplayer; -- luo tietokanta
 
 USE mediaplayer; -- käytä tietokantaa
 
 -- luodaan taulut
-CREATE TABLE kappale (id INT PRIMARY KEY, pituus VARCHAR(20),
+CREATE TABLE kappale (id INT, PRIMARY KEY (id), pituus VARCHAR(20),
 artisti VARCHAR(50), genre VARCHAR(20), nimi VARCHAR(50),
 linkki VARCHAR(100)); 
 
-CREATE TABLE kayttaja (kayttajaid INT PRIMARY KEY, nimi VARCHAR(20), salasana VARCHAR(20));
+CREATE TABLE kayttaja (id INT, PRIMARY KEY (id), tunnus VARCHAR(20), salasana VARCHAR(100));
 
-CREATE TABLE soittolista (soittolistaid INT PRIMARY KEY, nimi VARCHAR(20), kesto INT);
+CREATE TABLE soittolista (kappaleid INT, kayttajaid INT, FOREIGN KEY (kappaleid) REFERENCES kappale(id), FOREIGN KEY (kayttajaid) REFERENCES kayttaja(id));
 
 
 --asetetaan tietoja KAPPALE -tauluun
@@ -21,14 +23,16 @@ INSERT INTO kappale (id, artisti, nimi, linkki) VALUES ("5", "Viidesmies", "Sigi
 INSERT INTO kappale (id, artisti, nimi, linkki) VALUES ("6", "Kuudesmies", "Sadorchestra", "http://opengameart.org/sites/default/files/sadorchestralbgm%28syncopika%29.wav");
 INSERT INTO kappale (id, artisti, nimi, linkki) VALUES ("7", "Seitsemasmies", "Soliloguy", "public/media/Soliloquy_1.mp3");
 
+--luodaan käyttäjä ja salasana
+INSERT INTO kayttaja VALUES (1, "mediaplayer", "dc724af18fbdd4e59189f5fe768a5f8311527050");
 
---asetetaan tietoja KAYTTAJA -tauluun
-INSERT INTO kayttaja (kayttajaid, nimi, salasana) VALUES ("1", "mediaplayer", "testing");
-INSERT INTO kayttaja (kayttajaid, nimi, salasana) VALUES ("2", "testaaja", "testaaja");
+--asetetaan tietoja SOITTOLISTA-tauluun
+INSERT INTO soittolista VALUES (5, 1);
+INSERT INTO soittolista VALUES (6, 1);
 
 
---käyttäjän ja salasanan luonti
-CREATE USER mediaplayer IDENTIFIED BY 'testing';
+--käyttäjän luonti
+CREATE USER mediaplayer;
 
 --ultimate power
-GRANT ALL ON * TO mediaplayer;
+GRANT SELECT ON mediaplayer.* TO mediaplayer;
